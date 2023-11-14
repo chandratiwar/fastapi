@@ -1,0 +1,95 @@
+'''# def select_Department_details():
+#     with Session(engine) as session:
+#         statement = select(Department)
+#         hero = session.exec(statement)
+#         print("Department",hero)
+#         for i in hero:
+#             print(i)
+
+from sqlalchemy import func
+
+subquery = db.session.query(
+    table1,
+    func.rank().over(
+        order_by=table1.c.date.desc(),
+        partition_by=table1.c.id
+    ).label('rnk')
+).subquery()
+
+query = db.session.query(subquery).filter(
+    subquery.c.rnk==1
+)  
+labelling=func.dense_rank().over( 
+partition_by=Employee.deptid, order_by=Employee.salary.desc())
+subquery=session.query(Employee.salary,Department.Dname,Employee.deptid,labelling.label('dense_rnk')).subquery()
+statement = select(Department,Employee.salary).select_from(subquery).where(labelling==2)
+with t as  ( select e.salary ,d.dname ,e.deptid,dense_rank() over (partition by deptid order by salary desc) denserank
+from mydatabase.employee e
+inner join mydatabase.department d on e.deptid=d.did)
+
+select dname department_name ,salary second_highest_salary  from t
+where denserank={denserank}  
+ # subquery = Session.query(Employee.salary,Department.Dname,Employee.deptid,func.dense_rank().over( 
+        # partition_by = Employee.deptid, order_by=Employee.salary.desc()).label('dense_rnk')).subquery()
+        # query = Session.query(Department.Dname ,Employee.salary.label("second_highest_salary")).in_(subquery).filter(Employee.dense_rnk == "{}".format("dense_rnk"))
+        # print("query is query",query)
+        
+def helper_function(a):
+    with Session(engine) as session: 
+        statement =select(Department)       
+        dept = session.exec(statement)
+        statement1=select(Employee)
+        emp=session.exec(statement1)
+        s=0
+        listo=[]
+        for i in emp:
+            s+=i.salary
+            print()
+            listo.append(int(i.salary))
+        print("listo",listo)
+        avg=s//len(listo)
+        print("avg",avg)
+        listo.sort()
+        max=listo[-1]
+        print("max",listo[-1])
+        min=listo[0]
+        print("min",listo[0])
+    if a=="avg":
+        return avg
+    elif a=="max":
+        return max
+    elif a=="min":
+        return min
+    else:
+        pass
+        
+print("Query is query",query)
+query = db.session.query(subquery).filter(
+    subquery.c.rnk==1
+)where(Employee.deptid==Department.did)
+        hero = session.exec(statement).all()
+        print("Emplfgoyee",hero)
+
+    #    code written in sqlalchemy
+# subquery=Session.query(Employee.salary,Department.Dname,Employee.deptid,func.dense_rank().over( 
+# partition_by=Employee.deptid, order_by=Employee.salary.desc()).label('dense_rnk')).subquery()
+# query=Session.query(Department.Dname ,Employee.salary.label("second_highest_salary")).in_(subquery).filter(Employee.dense_rnk=="{}".format("dense_rnk"))
+# print("query is query",query)
+'''
+    ''' with t as  ( select e.salary ,d.dname ,e.deptid,dense_rank() over (partition by deptid order by salary desc) denserank
+from mydatabase.employee e
+inner join mydatabase.department d on e.deptid=d.did)
+
+select dname department_name ,salary second_highest_salary  from t
+where denserank={denserank}
+labelling=func.dense_rank().over(partition_by=Employee.deptid, order_by=Employee.salary.desc())
+
+        subquery=(select(Employee.salary,Department.Dname,Employee.deptid,(labelling).label('drank')).join(Department,and_(Employee.deptid == Department.did))).subquery()
+        #.subquery()
+        q1 = select(Employee.salary,Department.Dname,Employee.deptid,labelling.label('drank')).join(Department,and_(Employee.deptid == Department.did))
+        statement = select(column("salary"),column("deptid"),column("DName"),column("drank")).select_from(subquery).where(column("drank")==2)
+
+        dept1=session.exec(statement)
+        for i in dept1:
+            print(i)
+'''
